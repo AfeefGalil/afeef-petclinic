@@ -1,7 +1,7 @@
 FROM maven:latest AS builder
 WORKDIR /app
 COPY . .
-RUN mvn install
+RUN mvn install -DskipTests -Dcheckstyle.skip
 
 FROM openjdk:8-jre-alpine
 EXPOSE 8080
