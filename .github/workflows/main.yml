@@ -2,6 +2,11 @@ name: Build Petclinic Jar
 on:
   workflow_dispatch:
     inputs:
+      build_jar:
+        type: string
+        default: 'false'
+        description: 'build jar'
+        required: false
       aws_region:
         type: string
         default: 'us-east-2'
@@ -22,9 +27,35 @@ on:
         default: 'false'
         description: 'maven test'
         required: false
+      dep_env:
+        type: string
+        default: 'staging'
+        description: 'Deploy environment'
+        required: false
+      dep_role:
+        type: string
+        default: 'afeefPetclinic'
+        description: 'Deploy role'
+        required: false
+      dep_flavor:
+        type: string
+        default: 't3.medium'
+        description: 'Deploy ec2 instance type'
+        required: false
+      dep_asg_size:
+        type: string
+        default: '2'
+        description: 'Deploy ASG size'
+        required: false
+      dep_ami:
+        type: string
+        default: 'ami-0aeb7c931a5a61206'
+        description: 'Deploy ec2 ami'
+        required: false
 
 jobs:
   build_jar:
+    if: ${{ inputs.build_jar == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -61,3 +92,20 @@ jobs:
           AWS_REGION: 'us-east-2'
           SOURCE_DIR: 'jars/'
           DEST_DIR: 'test/'
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Deployer code
+        uses: actions/checkout@v3
+        with:
+          repository: AfeefGalil/petclinic_deploy
+          ref: master
+      - name: Deploy
+        uses: addnab/docker-run-action@v3
+        with:
+          image: devopslets/gs-cli-alb:latest_develop
+          options: -v $PWD:/opt/deployer -w /opt/deployer
+          run: |
+            . /gsdeployer/bin/activate
+            PYTHONPATH=. deploy_vpc deploy --env ${{inputs.dep_env}} --role ${{inputs.dep_role}} --bld ${{github.run_number}} --aws-chef-artifact "s3://afeef-tc-petclinic/afeef-chef-29-master.zip" --aws-petclinic-artifact "petclinic-35-afeef-petclinic.jar" --branch ${{github.head_ref}} --flavor ${{inputs.dep_flavor}} --asg-size ${{inputs.dep_asg_size}} --region ${{inputs.aws_region}}  --ami-override ${{inputs.dep_ami}} --on-demand
