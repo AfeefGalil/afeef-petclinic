@@ -1,11 +1,9 @@
 name: Build Petclinic Jar
 on:
-#   push:
-#     branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
-  build:
+  build_jar:
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
