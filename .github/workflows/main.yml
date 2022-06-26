@@ -95,7 +95,9 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    container: devopslets/gs-cli-alb:latest_develop
+    container:
+      image: devopslets/gs-cli-alb:latest_develop
+      options: -v ${{github.workspace}}:/opt/deployer -w /opt/deployer
     steps:
       - name: Checkout Deployer code
         uses: actions/checkout@v3
