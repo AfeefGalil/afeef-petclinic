@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Step 1 - Checkout main branch with Github
+      - name: Step 1 - Checkout code
         uses: actions/checkout@v3
 
       - name: Step 2 - Setup JAVA
@@ -35,7 +35,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: 415102591172.dkr.ecr.us-east-2.amazonaws.com/afeef-petclinic-private
-          IMAGE_TAG: ${{ github.GITHUB_RUN_NUMBER }}
+          IMAGE_TAG: ${{ env.GITHUB_RUN_NUMBER }}
         run: |
           docker build -t afeef-petclinic-private:$IMAGE_TAG .
           docker push afeef-petclinic-private:$IMAGE_TAG
