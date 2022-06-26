@@ -8,18 +8,18 @@ on:
         description: 'AWS Region'
         required: true
       upload_to_s3:
-        type: boolean
-        default: false
+        type: string
+        default: 'false'
         description: 'upload to S3'
         required: false
       mvn_install:
-        type: boolean
-        default: false
+        type: string
+        default: 'false'
         description: 'maven install'
         required: false
       mvn_test:
-        type: boolean
-        default: false
+        type: string
+        default: 'false'
         description: 'maven test'
         required: false
 
@@ -36,7 +36,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           
-      - name: Build with Maven
+      - name: Maven install
         if: ${{ inputs.mvn_install == 'true' }}
         run: mvn install -DskipTests
 
