@@ -23,7 +23,7 @@ jobs:
           aws-region: us-east-2
 
       - name: Upload to S3
-        if: ${{ inputs.upload_to_s3 }} == 'true'
+        if: ${{ inputs.upload_to_s3 == 'true' }}
         uses: jakejarvis/s3-sync-action@master
         env:
           AWS_S3_BUCKET: afeef-tc-petclinic
