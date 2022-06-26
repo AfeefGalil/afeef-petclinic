@@ -116,16 +116,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ inputs.aws_region }}
 
-      - name: Download Jar From S3
-        uses: jakejarvis/s3-sync-action@master
-        env:
-          AWS_S3_BUCKET: afeef-tc-petclinic
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'us-east-2'
-          SOURCE_DIR: 'petclinic-35-afeef-petclinic.jar'
-          DEST_DIR: 'jarssssssssssss/afeef-petclinicccccc.jar'
-
-      - name: echo
+      - name: Deploy
         run: |
-          ls -lah
+          . /gsdeployer/bin/activate
+          PYTHONPATH=. deploy_vpc deploy --env ${{inputs.dep_env}} --role ${{inputs.dep_role}} --bld ${{github.run_number}} --aws-chef-artifact "s3://afeef-tc-petclinic/afeef-chef-29-master.zip" --aws-petclinic-artifact "petclinic-35-afeef-petclinic.jar" --branch main --flavor ${{inputs.dep_flavor}} --asg-size ${{inputs.dep_asg_size}} --region ${{inputs.aws_region}}  --ami-override ${{inputs.dep_ami}} --on-demand
