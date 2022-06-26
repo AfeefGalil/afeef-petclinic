@@ -96,7 +96,7 @@ jobs:
           SOURCE_DIR: 'jars/'
           DEST_DIR: 'test/'
 
-  deploy:
+  deploy_using_deployer:
     runs-on: ubuntu-latest
     container:
       image: devopslets/gs-cli-alb:latest_develop
@@ -107,7 +107,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: AfeefGalil/petclinic_deploy
-          ref: master
+          ref: afeef-tests
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
