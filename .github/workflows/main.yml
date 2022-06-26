@@ -1,6 +1,12 @@
 name: Build Petclinic Jar
 on:
   workflow_dispatch:
+    inputs:
+      upload_to_s3:
+        type: boolean
+        default: false
+        description: 'boolean to upload the jar file to S3'
+        required: false
 
 jobs:
   build_jar:
@@ -17,6 +23,7 @@ jobs:
           aws-region: us-east-2
 
       - name: Upload to S3
+        if: ${{ inputs.upload_to_s3 }} == true
         uses: jakejarvis/s3-sync-action@master
         env:
           AWS_S3_BUCKET: afeef-tc-petclinic
