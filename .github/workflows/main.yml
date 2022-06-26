@@ -115,6 +115,17 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ inputs.aws_region }}
-      - name: aws s3
+
+      - name: Download Jar From S3
+        uses: jakejarvis/s3-sync-action@master
+        env:
+          AWS_S3_BUCKET: afeef-tc-petclinic
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'us-east-2'
+          SOURCE_DIR: 'petclinic-35-afeef-petclinic.jar'
+          DEST_DIR: 'jarssssssssssss/afeef-petclinicccccc.jar'
+
+      - name: echo
         run: |
-          aws s3 ls
+          ls -lah
