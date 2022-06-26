@@ -101,7 +101,7 @@ jobs:
     container:
       image: devopslets/gs-cli-alb:latest_develop
       options: -v ${{github.workspace}}:/opt/deployer -w /opt/deployer
-      
+
     steps:
       - name: Checkout Deployer code
         uses: actions/checkout@v3
@@ -115,8 +115,5 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ inputs.aws_region }}
-
-      - name: Deploy
         run: |
-          . /gsdeployer/bin/activate
-          PYTHONPATH=. deploy_vpc deploy --env ${{inputs.dep_env}} --role ${{inputs.dep_role}} --bld ${{github.run_number}} --aws-chef-artifact "s3://afeef-tc-petclinic/afeef-chef-29-master.zip" --aws-petclinic-artifact "petclinic-35-afeef-petclinic.jar" --branch main --flavor ${{inputs.dep_flavor}} --asg-size ${{inputs.dep_asg_size}} --region ${{inputs.aws_region}}  --ami-override ${{inputs.dep_ami}} --on-demand
+          aws s3 ls
