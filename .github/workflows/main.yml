@@ -9,12 +9,6 @@ jobs:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v3
 
-      - name: Step 2 - Setup JAVA
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -29,5 +23,5 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-2'
-          SOURCE_DIR: 'petclinic.jar'
+          SOURCE_DIR: 'jars/'
           DEST_DIR: 'test/'
