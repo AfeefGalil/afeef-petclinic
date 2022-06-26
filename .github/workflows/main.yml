@@ -1,8 +1,8 @@
 name: Build Petclinic Jar
 on:
-  push:
-    branches:
-      - afeef-tests
+  # push:
+  #   branches:
+  #     - afeef-tests
   workflow_dispatch:
     inputs:
       build_jar:
@@ -111,4 +111,4 @@ jobs:
       - name: Deploy
         run: |
           . /gsdeployer/bin/activate
-          echo env=${{inputs.dep_env}} role=${{inputs.dep_role}} bld=${{github.run_number}} aws-chef-artifact="s3://afeef-tc-petclinic/afeef-chef-29-master.zip" aws-petclinic-artifact="petclinic-35-afeef-petclinic.jar" branch=${{github.head_ref}} flavor=${{inputs.dep_flavor}} asg-size=${{inputs.dep_asg_size}} region=${{inputs.aws_region}}  ami-override=${{inputs.dep_ami}} --on-demand
+          PYTHONPATH=. deploy_vpc deploy --env ${{inputs.dep_env}} --role ${{inputs.dep_role}} --bld ${{github.run_number}} --aws-chef-artifact "s3://afeef-tc-petclinic/afeef-chef-29-master.zip" --aws-petclinic-artifact "petclinic-35-afeef-petclinic.jar" --branch main --flavor ${{inputs.dep_flavor}} --asg-size ${{inputs.dep_asg_size}} --region ${{inputs.aws_region}}  --ami-override ${{inputs.dep_ami}} --on-demand
